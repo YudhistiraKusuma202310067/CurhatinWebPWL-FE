@@ -31,10 +31,6 @@ const Header = () => {
                                                 <i className={"bi me-2 fs-5 text-dark "+v.icon}></i>
                                                 {v.name}
                                             </NavLink>
-                                            {/* <a className="nav-link text-hover-success px-3" href={v.path}>
-                                                <i className={"bi me-2 fs-5 text-dark "+v.icon}></i>
-                                                {v.name}
-                                            </a> */}
                                         </li>
                                     ))}
                                 </ul>

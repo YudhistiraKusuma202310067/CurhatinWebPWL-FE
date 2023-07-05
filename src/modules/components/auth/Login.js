@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { openModal } from '../../../layouts/components/modals/ModalPopUp';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -16,20 +15,18 @@ const Login = () => {
     axios
       .post('http://localhost:8080/user/auth', postData)
       .then((response) => {
-        const userData = response.data.data[0]; // Access the first element of the 'data' array
-        if (!userData) { // Check if response data is not null and has 'result' set to true
-          openModal({ header: 'Error', message: 'Failed to Login' });
-        } 
-        // Save user ID and username in local storage
-        localStorage.setItem('userId', userData.id);
-        localStorage.setItem('username', userData.username);
-
-        openModal({ header: 'Info', message: 'Login successfully, Welcome back!' });
-        navigate('/home');
+        const userData = response.data.data[0];
+        if (!userData) {
+          alert('Failed to login');
+        } else {
+          localStorage.setItem('userId', userData.id);
+          localStorage.setItem('username', userData.username);
+          navigate('/home');
+        }
       })
       .catch((error) => {
         console.error(error);
-        openModal({ header: 'Error', message: 'Failed to Login' });
+        alert('Email atau Password Salah');
       });
   };
 
@@ -77,8 +74,8 @@ const Login = () => {
                 type='submit'
                 class='btn btn-primary'
                 style={{
-                    fontWeight: 'bold', 
-                    fontSize: '18px'
+                  fontWeight: 'bold',
+                  fontSize: '18px'
                 }}
               >
                 Masuk

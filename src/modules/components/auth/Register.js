@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { openModal } from '../../../layouts/components/modals/ModalPopUp';
 
 const Register = () => {
   const [username, setUsername] = useState('');
@@ -17,20 +16,23 @@ const Register = () => {
     axios
       .post('http://localhost:8080/user', postData)
       .then((response) => {
-        if (response.error) {
-          openModal({ header: 'Error', message: response.error });
+        const userData = response.data.data[0];
+        if (!userData) {
+          alert('Failed to Register');
         } else {
-          let results = response.data;
-          if (results) {
-            openModal({ header: 'Info', message: 'Successfully registered' });
-            navigate('/home');
-          } else {
-            openModal({ header: 'Error', message: 'Failed to register' });
-          }
+          localStorage.setItem('userId', userData.id);
+          localStorage.setItem('username', userData.username);
+          navigate('/home');
+          alert('Register successful');
         }
       })
       .catch((error) => {
         console.error(error);
+        if (error.response && error.response.data && error.response.data.message) {
+          alert(error.response.data.message);
+        } else {
+          alert('Failed to Register');
+        }
       });
   };
 
