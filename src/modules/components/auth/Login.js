@@ -10,30 +10,26 @@ const Login = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
     const postData = { email, password };
-  
+
     axios
       .post('http://localhost:8080/user/auth', postData)
       .then((response) => {
-        if (response.error) {
-          console.error(response.error);
-        } else {
-          let results = response.data;
-          if (results) {
-            // Save user ID and username in local storage
-            localStorage.setItem('userId', results.id);
-            localStorage.setItem('username', results.username);
-  
-            openModal({ header: 'Info', message: 'Login successfully, Welcome back!' });
-            navigate('/home');
-          } else {
-            openModal({ header: 'Error', message: 'Failed to Login' });
-          }
-        }
+        const userData = response.data.data[0]; // Access the first element of the 'data' array
+        if (!userData) { // Check if response data is not null and has 'result' set to true
+          openModal({ header: 'Error', message: 'Failed to Login' });
+        } 
+        // Save user ID and username in local storage
+        localStorage.setItem('userId', userData.id);
+        localStorage.setItem('username', userData.username);
+
+        openModal({ header: 'Info', message: 'Login successfully, Welcome back!' });
+        navigate('/home');
       })
       .catch((error) => {
         console.error(error);
+        openModal({ header: 'Error', message: 'Failed to Login' });
       });
   };
 

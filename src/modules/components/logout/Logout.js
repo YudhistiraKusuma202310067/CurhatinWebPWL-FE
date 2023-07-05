@@ -9,10 +9,7 @@ const Logout = () => {
   }, []);
 
   const handleLogout = () => {
-    // Menghapus data dari local storage
-    localStorage.removeItem('userId');
-    localStorage.removeItem('username');
-    localStorage.removeItem('token');
+    localStorage.clear();
 
     // Navigasi ke halaman login
     navigate('/login');
