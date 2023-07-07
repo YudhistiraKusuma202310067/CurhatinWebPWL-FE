@@ -27,8 +27,7 @@ const Header = () => {
                                 <ul className="navbar-nav me-auto mb-2 mb-md-0">
                                     {menuList.map((v, index) => (
                                         <li className="nav-item me-1" key={index}>
-                                            <NavLink className="nav-link text-hover-success px-3" to={v.path}>
-                                                <i className={"bi me-2 fs-5 text-dark "+v.icon}></i>
+                                            <NavLink className="nav-link text-hover-success px-4" to={v.path}>
                                                 {v.name}
                                             </NavLink>
                                         </li>

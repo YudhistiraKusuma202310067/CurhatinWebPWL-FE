@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import CardFormPost from './card/CardFormPost';
 import CardPost from './card/CardPost'
-import CartCategory from './card/CartCategory';
-
+import CardCategory from './card/CardCategory';
 
 class Post extends Component {
     render() {
@@ -13,9 +12,10 @@ class Post extends Component {
                         <p style={{fontWeight: "bold", fontSize: "20px"}}>Kategori</p>
                     </div>
                     <div className='row'>
-                        <CartCategory />
+                        <CardCategory />
                     </div>
                 </div>
+                <div className='mt-4 mb-2' style={{borderTop: "3px solid #DAEDFF"}}></div>
                 <div className='row'>
                     <div className='col-9'>
                         <CardPost />

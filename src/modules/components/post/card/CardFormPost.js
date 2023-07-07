@@ -33,16 +33,23 @@ const CardFormPost = () => {
       .post('http://localhost:8080/post', postData)
       .then((response) => {
         console.log(response.data);
+        alert('Post successfully');
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
+        if (error.response && error.response.data && error.response.data.message) {
+          alert(error.response.data.message);
+        } else {
+          alert('Failed to Post');
+        }
       });
   };
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
-        <div className='card mt-3 p-3' style={{ background: '#DAEDFF' }}>
+        <div className='card p-3 mt-3' style={{ background: '#DAEDFF' }}>
           <h3 className='mt-4' style={{ textAlign: 'center', fontWeight: 'bold', color: '#1D82E3' }}>
             Posting Cerita
           </h3>
@@ -50,7 +57,7 @@ const CardFormPost = () => {
             <div className='form-group'>
               <label htmlFor='category'>Kategori</label>
               <select
-                className='form-control'
+                className='form-control mt-2'
                 id='categoryControl'
                 value={category}
                 onChange={(e) => setCategory(e.target.value)}
@@ -65,7 +72,7 @@ const CardFormPost = () => {
             <div className='mt-3'>
               <label htmlFor='story'>Cerita Kamu</label>
               <textarea
-                className='form-control'
+                className='form-control mt-2'
                 id='storyArea'
                 rows='7'
                 value={story}

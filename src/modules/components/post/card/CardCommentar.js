@@ -2,12 +2,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 const CardCommentar = (props) => {
-  const { postId } = props; // Extract the postId from props
+  const { postId } = props;
   const [comments, setComments] = useState([]);
 
   useEffect(() => {
     fetchComments(postId);
-  }, [postId]); // Add postId as a dependency to re-fetch comments when it changes
+  }, [postId]);
 
   const fetchComments = (postId) => {
     axios
@@ -21,18 +21,26 @@ const CardCommentar = (props) => {
       });
   };
 
+  const formatCommentDate = (commentDate) => {
+    const date = new Date(commentDate);
+    return date.toLocaleDateString('en-GB');
+  };
+
   return (
     <div>
-      {comments.map((comment) => (
-        <div key={comment.id} className='mt-2'>
-          <div className="card-body" style={{ background: 'white', borderRadius: '0.375rem' }}>
-            <div>
-              {comment.commentDate} / {comment.user.username}
-            </div>
-            <div>{comment.comment}</div>
-          </div>
+        <div className='mt-2 mb-2'>
+            <span className='ml-2'>{comments.length} Komentar</span>
         </div>
-      ))}
+        {comments.map((comment) => (
+            <div key={comment.id} className='mt-2'>
+            <div className="card-body" style={{ background: 'white', borderRadius: '0.375rem' }}>
+                <div className='mb-1' style={{ fontSize: '14px' }}>
+                {formatCommentDate(comment.commentDate)} - {comment.user.username}
+                </div>
+                <div>{comment.comment}</div>
+            </div>
+            </div>
+        ))}
     </div>
   );
 };
