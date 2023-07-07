@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
-const CardFormPost = () => {
+const CardFormPost = (props) => {
   const [story, setStory] = useState('');
   const [categories, setCategories] = useState([]);
   const [category, setCategory] = useState('');
@@ -34,7 +34,9 @@ const CardFormPost = () => {
       .then((response) => {
         console.log(response.data);
         alert('Post successfully');
-        window.location.reload();
+        setCategory('')
+        setStory('')
+        props.fetchPosts()
       })
       .catch((error) => {
         console.error(error);
