@@ -9,6 +9,7 @@ const CardFormPost = (props) => {
 
   useEffect(() => {
     getCategory();
+    setCategory('1');
   }, []);
 
   const getCategory = () => {
@@ -33,7 +34,7 @@ const CardFormPost = (props) => {
       .then((response) => {
         console.log(response.data);
         alert('Post successfully');
-        setCategory('')
+        setCategory('1')
         setStory('')
         props.fetchPosts()
       })

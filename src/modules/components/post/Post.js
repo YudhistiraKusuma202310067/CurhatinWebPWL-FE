@@ -4,17 +4,19 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 import CardFormPost from './card/CardFormPost';
-import CardCategory from './card/CardCategory';
 import CardCommentar from './card/CardCommentar';
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
   const [editingPostId, setEditingPostId] = useState(null);
   const [editedPost, setEditedPost] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
+  const [categories, setCategories] = useState([]);
   const user_id = localStorage.getItem('userId');
 
   useEffect(() => {
     fetchPosts();
+    getCategory();
   }, []);
 
   const fetchPosts = () => {
@@ -94,13 +96,6 @@ const Post = () => {
         alert('Failed to delete post')
       });
   };
-
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState('');
-
-  useEffect(() => {
-    getCategory();
-  }, []);
 
   const getCategory = () => {
     axios

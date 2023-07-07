@@ -14,7 +14,7 @@ const Header = () => {
         <header>
             <nav className="navbar navbar-expand-md fixed-top shadow" style={{backgroundColor: "#DAEDFF"}}>
                 <div className="container">
-                    <a className="navbar-brand" href="#">
+                    <a className="navbar-brand" href="/home">
                         <img src={require('../../../asset/logo 2a 1.png')} alt="curhatin-logo" 
                         style={{ height: "40px" }} />
                     </a>
