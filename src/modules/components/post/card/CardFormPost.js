@@ -27,7 +27,6 @@ const CardFormPost = (props) => {
     e.preventDefault();
 
     const postData = { user: { id: user_id }, category: { id: category }, story };
-    console.log(postData);
 
     axios
       .post('http://localhost:8080/post', postData)

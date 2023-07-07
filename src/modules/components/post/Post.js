@@ -94,6 +94,45 @@ const Post = () => {
         alert('Failed to delete post')
       });
   };
+
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState('');
+
+  useEffect(() => {
+    getCategory();
+  }, []);
+
+  const getCategory = () => {
+    axios
+      .get('http://localhost:8080/category')
+      .then((response) => {
+        console.log(response.data.data);
+        setCategories(response.data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const handleCategoryChange = (categoryId) => {
+    setSelectedCategory(categoryId);
+    sortByCategory(categoryId);
+  };
+
+  const sortByCategory = (categoryId) => {
+    axios
+      .post(`http://localhost:8080/post/findPostByCategory`, { category_id: categoryId })
+      .then((response) => {
+        console.log('Sorted posts by category successfully:', response.data);
+        const sortedPosts = response.data.data.sort((a, b) => new Date(b.postDate) - new Date(a.postDate));
+        setPosts(sortedPosts);
+        setEditingPostId(null);
+      })
+      .catch((error) => {
+        console.error('Failed to sort posts by category:', error);
+        alert('Failed to sort posts by category');
+      });
+  };
   
   return (
     <div className='p-5' style={{marginTop: "50px"}}>
@@ -102,7 +141,19 @@ const Post = () => {
                 <p style={{fontWeight: "bold", fontSize: "20px"}}>Kategori</p>
             </div>
             <div className='row'>
-                <CardCategory />
+                <div className='w-auto'>
+                {categories.map((category) => (
+                    <button
+                    key={category.id}
+                    type='button'
+                    className={`btn btn-primary ${selectedCategory === category.id ? 'active' : ''}`}
+                    style={{ backgroundColor: '#1D82E3', marginRight: "10px", width: "125px"}}
+                    onClick={() => handleCategoryChange(category.id)}
+                    >
+                    {category.categoryName}
+                    </button>
+                ))}
+                </div>
             </div>
         </div>
         <div className='mt-4 mb-2' style={{borderTop: "3px solid #DAEDFF"}}></div>
