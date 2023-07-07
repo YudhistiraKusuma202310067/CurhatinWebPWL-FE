@@ -9,7 +9,7 @@ import CardCommentar from './card/CardCommentar';
 
 const Post = () => {
   const [posts, setPosts] = useState([]);
-  const [isEditing, setIsEditing] = useState(false);
+  const [editingPostId, setEditingPostId] = useState(null);
   const [editedPost, setEditedPost] = useState('');
   const user_id = localStorage.getItem('userId');
 
@@ -45,7 +45,7 @@ const Post = () => {
   };
 
   const handleEdit = (postId) => {
-    setIsEditing(true);
+    setEditingPostId(postId);
     const postToEdit = posts.find((post) => post.id === postId);
     setEditedPost(postToEdit.story);
   };
@@ -70,7 +70,7 @@ const Post = () => {
         .put(`http://localhost:8080/post`, postData)
         .then((response) => {
           console.log('Post updated successfully:', response.data);
-          setIsEditing(false);
+          setEditingPostId(null);
           fetchPosts();
           alert('Post updated successfully');
         })
@@ -94,104 +94,109 @@ const Post = () => {
         alert('Failed to delete post')
       });
   };
-        return (
-            <div className='p-5' style={{marginTop: "50px"}}>
-                <div className='row'>
-                    <div className='row'>
-                        <p style={{fontWeight: "bold", fontSize: "20px"}}>Kategori</p>
-                    </div>
-                    <div className='row'>
-                        <CardCategory />
-                    </div>
-                </div>
-                <div className='mt-4 mb-2' style={{borderTop: "3px solid #DAEDFF"}}></div>
-                <div className='row'>
-                    <div className='col-9'>
-                        {posts.length > 0 ? (
-                            <div>
-                            {posts.map((post) => (
-                                <div key={post.id} className='Margin mt-3'>
-                                <div className='card p-4' style={{ background: '#DAEDFF' }}>
-                                    <div className='row'>
-                                    <div className='col'>
-                                        <div style={{ fontSize: '14px' }}>
-                                        {formatPostDate(post.postDate)} - {post.user.username}
-                                        </div>
-                                    </div>
-                                    <div className='col'>
-                                        <div className='d-flex justify-content-end'>
-                                        <button
-                                            type='button'
-                                            className='btn btn-outline-primary me-2'
-                                            onClick={() => handleEdit(post.id)}
-                                        >
-                                            <FontAwesomeIcon icon={faEdit} />
-                                        </button>
-                                        <button
-                                            type='button'
-                                            className='btn btn-outline-danger'
-                                            onClick={() => handleDelete(post.id)}
-                                        >
-                                            <FontAwesomeIcon icon={faTrash} />
-                                        </button>
-                                        </div>
-                                    </div>
-                                    </div>
-                                    <div className='my-2' style={{ fontWeight: '500' }}>
-                                    {post.category.categoryName}
-                                    </div>
-                                    <div>
-                                        {isEditing ? (
-                                            <div style={{ background: '#DAEDFF' }}>
-                                            <textarea
-                                                className='form-control mb-3'
-                                                value={editedPost}
-                                                onChange={(e) => setEditedPost(e.target.value)}
-                                                required
-                                            ></textarea>
-                                            <div className='text-center'>
-                                                <button
-                                                    type='button'
-                                                    className='btn btn-danger mx-1'
-                                                    style={{width: "125px"}}
-                                                    onClick={() => setIsEditing(false)}
-                                                >
-                                                    Cancel
-                                                </button>
-                                                <button
-                                                    type='button'
-                                                    className='btn btn-primary mx-1'
-                                                    style={{width: "125px"}}
-                                                    onClick={() => handleUpdatePost(post.id)}
-                                                >
-                                                    Update Post
-                                                </button>
-                                            </div>
-                                            
-                                            </div>
-                                        ) : (
-                                            <div className='card-body' style={{ background: 'white', borderRadius: '0.375rem' }}>
-                                            {post.story}
-                                            </div>
-                                        )}
-                                        </div>
-
-                                    <div>{post.id && <CardCommentar postId={post.id}/>}</div>
-
-                                </div>
-                                </div>
-                            ))}
-                            </div>
-                        ) : (
-                            <div>Loading posts...</div>
-                        )}
-                    </div>
-                    <div className='col-3'>
-                        <CardFormPost fetchPosts={fetchPosts}/>
-                    </div>
-                </div>
+  
+  return (
+    <div className='p-5' style={{marginTop: "50px"}}>
+        <div className='row'>
+            <div className='row'>
+                <p style={{fontWeight: "bold", fontSize: "20px"}}>Kategori</p>
             </div>
-        );
-    }
+            <div className='row'>
+                <CardCategory />
+            </div>
+        </div>
+        <div className='mt-4 mb-2' style={{borderTop: "3px solid #DAEDFF"}}></div>
+        <div className='row'>
+            <div className='col-9'>
+                {posts.length > 0 ? (
+                    <div>
+                    {posts.map((post) => (
+                        <div key={post.id} className='Margin mt-3'>
+                        <div className='card p-4' style={{ background: '#DAEDFF' }}>
+                            <div className='row'>
+                            <div className='col'>
+                                <div style={{ fontSize: '14px' }}>
+                                {formatPostDate(post.postDate)} - {post.user.username}
+                                </div>
+                            </div>
+                            <div className='col'>
+                                <div className='d-flex justify-content-end'>
+                                {editingPostId === post.id ? (
+                                  <div className='d-flex'>
+                                    <button
+                                      type='button'
+                                      className='btn btn-danger mx-1'
+                                      style={{width: "125px"}}
+                                      onClick={() => setEditingPostId(null)}
+                                    >
+                                      Cancel
+                                    </button>
+                                    <button
+                                      type='button'
+                                      className='btn btn-primary mx-1'
+                                      style={{width: "125px"}}
+                                      onClick={() => handleUpdatePost(post.id)}
+                                    >
+                                      Update Post
+                                    </button>
+                                  </div>
+                                ) : (
+                                  <div>
+                                    <button
+                                      type='button'
+                                      className='btn btn-outline-primary me-2'
+                                      onClick={() => handleEdit(post.id)}
+                                    >
+                                      <FontAwesomeIcon icon={faEdit} />
+                                    </button>
+                                    <button
+                                      type='button'
+                                      className='btn btn-outline-danger'
+                                      onClick={() => handleDelete(post.id)}
+                                    >
+                                      <FontAwesomeIcon icon={faTrash} />
+                                    </button>
+                                  </div>
+                                )}
+                                </div>
+                            </div>
+                            </div>
+                            <div className='my-2' style={{ fontWeight: '500' }}>
+                            {post.category.categoryName}
+                            </div>
+                            <div>
+                                {editingPostId === post.id ? (
+                                    <div style={{ background: '#DAEDFF' }}>
+                                    <textarea
+                                        className='form-control mb-3'
+                                        value={editedPost}
+                                        onChange={(e) => setEditedPost(e.target.value)}
+                                        required
+                                    ></textarea>
+                                    </div>
+                                ) : (
+                                    <div className='card-body' style={{ background: 'white', borderRadius: '0.375rem' }}>
+                                    {post.story}
+                                    </div>
+                                )}
+                                </div>
+
+                            <div>{post.id && <CardCommentar postId={post.id}/>}</div>
+
+                        </div>
+                        </div>
+                    ))}
+                    </div>
+                ) : (
+                    <div>Loading posts...</div>
+                )}
+            </div>
+            <div className='col-3'>
+                <CardFormPost fetchPosts={fetchPosts}/>
+            </div>
+        </div>
+    </div>
+  );
+}
 
 export default Post;
