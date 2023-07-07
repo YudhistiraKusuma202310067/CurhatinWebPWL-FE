@@ -8,7 +8,7 @@ import CardCategory from './card/CardCategory';
 import CardCommentar from './card/CardCommentar';
 
 const Post = () => {
-    const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [editedPost, setEditedPost] = useState('');
   const user_id = localStorage.getItem('userId');
@@ -75,7 +75,6 @@ const Post = () => {
           alert('Post updated successfully');
         })
         .catch((error) => {
-            console.log(postData)
           console.error('Failed to update post:', error);
           alert('Failed to update post');
         });
@@ -150,10 +149,19 @@ const Post = () => {
                                                 onChange={(e) => setEditedPost(e.target.value)}
                                                 required
                                             ></textarea>
-                                            <div className='text-end d-grid'>
+                                            <div className='text-center'>
                                                 <button
                                                     type='button'
-                                                    className='btn btn-primary'
+                                                    className='btn btn-danger mx-1'
+                                                    style={{width: "125px"}}
+                                                    onClick={() => setIsEditing(false)}
+                                                >
+                                                    Cancel
+                                                </button>
+                                                <button
+                                                    type='button'
+                                                    className='btn btn-primary mx-1'
+                                                    style={{width: "125px"}}
                                                     onClick={() => handleUpdatePost(post.id)}
                                                 >
                                                     Update Post

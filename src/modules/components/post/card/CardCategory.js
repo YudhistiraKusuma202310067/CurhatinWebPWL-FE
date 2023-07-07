@@ -6,26 +6,10 @@ const CardCategory = ({ onCategoryChange }) => {
   const [selectedCategory, setSelectedCategory] = useState('');
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
-
-  useEffect(() => {
     getCategory();
   }, []);
 
   const getCategory = () => {
-    axios
-      .get('http://localhost:8080/category')
-      .then((response) => {
-        console.log(response.data.data);
-        setCategories(response.data.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
-
-  const fetchCategories = () => {
     axios
       .get('http://localhost:8080/category')
       .then((response) => {
