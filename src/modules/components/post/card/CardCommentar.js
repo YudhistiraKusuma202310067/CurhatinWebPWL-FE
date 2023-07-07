@@ -21,10 +21,20 @@ const CardCommentar = (props) => {
       });
   };
 
-  const formatCommentDate = (commentDate) => {
-    const date = new Date(commentDate);
-    return date.toLocaleDateString('en-GB');
+  const formatCommentDate = (postDate) => {
+    const date = new Date(postDate);
+    const now = new Date();
+  
+    const timeDifference = now.getTime() - date.getTime();
+    const hoursDifference = Math.floor(timeDifference / (1000 * 60 * 60));
+  
+    if (hoursDifference < 24) {
+      return date.toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+    } else {
+      return date.toLocaleDateString('en-GB');
+    }
   };
+  
 
   return (
     <div>
