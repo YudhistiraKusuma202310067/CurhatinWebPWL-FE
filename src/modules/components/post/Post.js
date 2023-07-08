@@ -136,7 +136,15 @@ const Post = () => {
                 <p style={{fontWeight: "bold", fontSize: "20px"}}>Kategori</p>
             </div>
             <div className='row'>
-                <div className='w-auto'>
+                <div>
+                <button
+                  type='button'
+                  className='btn btn-primary'
+                  style={{ backgroundColor: '#1D82E3', marginRight: "10px", width: "125px" }}
+                  onClick={fetchPosts}
+                >
+                  Semua
+                </button>
                 {categories.map((category) => (
                     <button
                     key={category.id}
